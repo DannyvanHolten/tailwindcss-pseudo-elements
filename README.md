@@ -1,6 +1,7 @@
 # tailwindcss-pseudo-elements
 
 TailwindCSS Plugin that adds variants of pseudo elements (`::before`, `::after`, `::first-letter`, etc.).
+Also add a utility named `content` that will add an empty content property to your element
 
 ## Usage
 
@@ -8,44 +9,23 @@ TailwindCSS Plugin that adds variants of pseudo elements (`::before`, `::after`,
 
 #### NPM
 ```sh
-npm install tailwindcss-pseudo-elements --save-dev
+npm install tailwindcss-pseudo --save-dev
 ```
 
 #### Yarn
 ```sh
-yarn add tailwindcss-pseudo-elements -D
+yarn add tailwindcss-pseudo -D
 ```
 
 ### Configuration
 
 ```js
 module.exports = {
-  modules: [
-    textColors: ['responsive', 'hover', 'focus', 'before', 'after'],
-  ],
-  
+  variants: {
+    backgroundColor: ['focus', 'hover', 'after', 'before'],
+},
   plugins: [
-    require('tailwindcss-pseudo-elements'),
-    // This plugin is useful in combination with tailwindcss-aspect-ratio.
-    require('tailwindcss-aspect-ratio')({
-      ratios: {
-        '16/9': [16, 9],
-        '4/3': [4, 3],
-        '3/2': [3, 2],
-        '1/1': [1, 1],
-      },
-      variants: ['before', 'responsive']
-    }),
-    function ({ addUtilities }) {
-      addUtilities(
-        {
-          '.empty-content': {
-            content: "''"
-          }
-        },
-        ['before']
-      )
-    }
+    require('tailwindcss-pseudo')(),
   ]
 }
 ```
@@ -53,7 +33,11 @@ module.exports = {
 ### HTML
 
 ```html
-<div class="relative before:aspect-ratio-4/3 before:empty-content">
+<div class="relative before:bg-blue-500 before:content">
   <img class="absolute pin w-full h-full" src="..." />
 </div>
 ```
+
+### Credits
+
+Special thanx to @yutahaga for the original plugin, I only changed it a bit to include the utility.

@@ -1,12 +1,28 @@
-const pseudoElements = require('./pseudo-elements')
+module.exports = function () {
+  return ({ addVariant, addUtilities, e }) => {
+    const elements = [
+      'after',
+      'backdrop',
+      'before',
+      'cue',
+      'first-letter',
+      'first-line',
+      'grammar-error',
+      'marker',
+      'placeholder',
+      'selection',
+    ];
 
-module.exports = function({addVariant, e}) {
-  const escape = e || (x => x)
-  pseudoElements.forEach(pseudo => {
-    addVariant(pseudo, ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `.${escape(`${pseudo}${separator}${className}`)}::${pseudo}`
-      })
-    })
-  })
-}
+    elements.forEach(pseudo => {
+      addVariant(pseudo, ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => `.${e(`${pseudo}${separator}${className}`)}::${pseudo}`);
+      });
+    });
+
+    addUtilities({
+      '.content': {
+        content: '\'\'',
+      },
+    }, ['before', 'after']);
+  };
+};
